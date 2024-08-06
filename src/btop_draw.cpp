@@ -146,7 +146,7 @@ namespace Draw {
 	}
 
 	TextEdit::TextEdit() {}
-	TextEdit::TextEdit(string text, bool numeric) : numeric(numeric), text(text) {
+	TextEdit::TextEdit(string text, bool numeric) : numeric(numeric), text(std::move(text)) {
 		pos = this->text.size();
 		upos = ulen(this->text);
 	}
@@ -247,7 +247,7 @@ namespace Draw {
 
 	string createBox(const int x, const int y, const int width,
 					 const int height, string line_color, bool fill,
-					 const string title, const string title2, const int num) {
+					 const string& title, const string& title2, const int num) {
 		string out;
 
 		if (line_color.empty())
@@ -1871,7 +1871,7 @@ namespace Proc {
 					const string_view cmd = width_left > 40 ? rtrim(p.cmd) : p.short_cmd;
 					if (not cmd.empty() and cmd != p.name) {
 						out += g_color + '(' + uresize(string{cmd}, width_left - 3, p_wide_cmd[p.pid]) + ") ";
-						width_left -= (ulen(string{cmd}, true) + 3);
+						width_left -= (ulen(cmd, true) + 3);
 					}
 				}
 				out += string(max(0, width_left), ' ') + Mv::to(y+2+lc, x+2+tree_size);

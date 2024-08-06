@@ -211,11 +211,17 @@ namespace Term {
 
 namespace Tools {
 
-	size_t wide_ulen(const string& str) {
+	size_t wide_ulen(const string_view str) {
 		unsigned int chars = 0;
 		try {
 			std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-			auto w_str = conv.from_bytes((str.size() > 10000 ? str.substr(0, 10000).c_str() : str.c_str()));
+			const char *first = str.data(), *last;
+			if (str.size() > 10000)
+				last = str.data() + 10000;
+			else
+				last = str.data() + str.size();
+
+			auto w_str = conv.from_bytes(first, last);
 
 			for (auto c : w_str) {
 				chars += utf8::wcwidth(c);
@@ -228,7 +234,7 @@ namespace Tools {
 		return chars;
 	}
 
-	size_t wide_ulen(const std::wstring& w_str) {
+	size_t wide_ulen(const std::wstring_view w_str) {
 		unsigned int chars = 0;
 
 		for (auto c : w_str) {
@@ -578,7 +584,7 @@ namespace Tools {
 		return (user != nullptr ? user : "");
 	}
 
-	DebugTimer::DebugTimer(const string name, bool start, bool delayed_report) : name(name), delayed_report(delayed_report) {
+	DebugTimer::DebugTimer(string name, bool start, bool delayed_report) : name(std::move(name)), delayed_report(delayed_report) {
 		if (start)
 			this->start();
 	}

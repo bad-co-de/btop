@@ -54,6 +54,7 @@ tab-size = 4
 using std::array;
 using std::atomic;
 using std::string;
+using std::string_view;
 using std::to_string;
 using std::string_view;
 using std::tuple;
@@ -177,10 +178,10 @@ namespace Logger {
 	void set(const string& level);
 
 	void log_write(const Level level, const string& msg);
-	inline void error(const string msg) { log_write(ERROR, msg); }
-	inline void warning(const string msg) { log_write(WARNING, msg); }
-	inline void info(const string msg) { log_write(INFO, msg); }
-	inline void debug(const string msg) { log_write(DEBUG, msg); }
+	inline void error(const string& msg) { log_write(ERROR, msg); }
+	inline void warning(const string& msg) { log_write(WARNING, msg); }
+	inline void info(const string& msg) { log_write(INFO, msg); }
+	inline void debug(const string& msg) { log_write(DEBUG, msg); }
 }
 
 //? --------------------------------------------------- FUNCTIONS -----------------------------------------------------
@@ -194,11 +195,11 @@ namespace Tools {
 		virtual std::string do_grouping() const override { return "\03"; }
 	};
 
-	size_t wide_ulen(const string& str);
-	size_t wide_ulen(const std::wstring& w_str);
+	size_t wide_ulen(const string_view str);
+	size_t wide_ulen(const std::wstring_view w_str);
 
 	//* Return number of UTF8 characters in a string (wide=true for column size needed on terminal)
-	inline size_t ulen(const string& str, bool wide = false) {
+	inline size_t ulen(const string_view str, bool wide = false) {
 		return (wide ? wide_ulen(str) : std::ranges::count_if(str, [](char c) { return (static_cast<unsigned char>(c) & 0xC0) != 0x80; }));
 	}
 

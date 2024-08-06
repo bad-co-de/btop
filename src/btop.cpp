@@ -87,10 +87,10 @@ namespace Global {
 	string overlay;
 	string clock;
 
-	string bg_black = "\x1b[0;40m";
-	string fg_white = "\x1b[1;97m";
-	string fg_green = "\x1b[1;92m";
-	string fg_red = "\x1b[0;91m";
+	constexpr std::string_view bg_black = "\x1b[0;40m";
+	constexpr std::string_view fg_white = "\x1b[1;97m";
+	constexpr std::string_view fg_green = "\x1b[1;92m";
+	constexpr std::string_view fg_red = "\x1b[0;91m";
 
 	uid_t real_uid, set_uid;
 
