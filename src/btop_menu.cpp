@@ -1599,7 +1599,7 @@ namespace Menu {
 	};
 	bitset<8> menuMask;
 
-	void process(string key) {
+	void process(const string& key) {
 		if (menuMask.none()) {
 			Menu::active = false;
 			Global::overlay.clear();
