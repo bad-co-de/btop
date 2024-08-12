@@ -1064,16 +1064,16 @@ namespace Menu {
 			vector<string> cont_vec;
 			cont_vec.push_back(Fx::b + Theme::g("used")[100] + "Failure:" + Theme::c("main_fg") + Fx::ub);
 			if (signalKillRet == EINVAL) {
-				cont_vec.push_back("Unsupported signal!" + Fx::reset);
+				cont_vec.emplace_back("Unsupported signal!" + Fx::reset);
 			}
 			else if (signalKillRet == EPERM) {
-				cont_vec.push_back("Insufficient permissions to send signal!" + Fx::reset);
+				cont_vec.emplace_back("Insufficient permissions to send signal!" + Fx::reset);
 			}
 			else if (signalKillRet == ESRCH) {
-				cont_vec.push_back("Process not found!" + Fx::reset);
+				cont_vec.emplace_back("Process not found!" + Fx::reset);
 			}
 			else {
-				cont_vec.push_back("Unknown error! (errno: " + to_string(signalKillRet) + ')' + Fx::reset);
+				cont_vec.emplace_back("Unknown error! (errno: " + to_string(signalKillRet) + ')' + Fx::reset);
 			}
 
 			messageBox = Menu::msgBox{50, 0, cont_vec, "error"};

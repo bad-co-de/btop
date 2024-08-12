@@ -297,9 +297,9 @@ namespace Shared {
 		Gpu::Intel::init();
 		if (not Gpu::gpu_names.empty()) {
 			for (auto const& [key, _] : Gpu::gpus[0].gpu_percent)
-				Cpu::available_fields.push_back(key);
+				Cpu::available_fields.emplace_back(key);
 			for (auto const& [key, _] : Gpu::shared_gpu_percent)
-				Cpu::available_fields.push_back(key);
+				Cpu::available_fields.emplace_back(key);
 
 			using namespace Gpu;
 			count = gpus.size();
@@ -404,7 +404,7 @@ namespace Cpu {
 
 						string filename = file.path().filename();
 						if (filename.starts_with("temp") and filename.ends_with("_input")) {
-							search_paths.push_back(add_path);
+							search_paths.emplace_back(std::move(add_path));
 							break;
 						}
 					}
@@ -417,7 +417,7 @@ namespace Cpu {
 					for (const auto & file : fs::directory_iterator(add_path)) {
 						string filename = file.path().filename();
 						if (filename.starts_with("temp") and filename.ends_with("_input") and not v_contains(search_paths, add_path)) {
-								search_paths.push_back(add_path);
+								search_paths.emplace_back(std::move(add_path));
 								got_coretemp = true;
 								break;
 						}
@@ -1903,7 +1903,7 @@ namespace Mem {
 									if (instr == "/") fstab.push_back("/mnt");
 									else if (not is_in(instr, "none", "swap")) fstab.push_back(instr);
 								#else
-									if (not is_in(instr, "none", "swap")) fstab.push_back(instr);
+									if (not is_in(instr, "none", "swap")) fstab.emplace_back(std::move(instr));
 								#endif
 							}
 							diskread.ignore(SSmax, '\n');
@@ -1986,7 +1986,7 @@ namespace Mem {
 					}
 
 					//? Remove disks no longer mounted or filtered out
-					if (swap_disk and has_swap) found.push_back("swap");
+					if (swap_disk and has_swap) found.emplace_back("swap");
 					for (auto it = disks.begin(); it != disks.end();) {
 						if (not v_contains(found, it->first))
 							it = disks.erase(it);
@@ -2052,12 +2052,12 @@ namespace Mem {
 				//? Setup disks order in UI and add swap if enabled
 				mem.disks_order.clear();
 				#ifdef SNAPPED
-					if (disks.contains("/mnt")) mem.disks_order.push_back("/mnt");
+					if (disks.contains("/mnt")) mem.disks_order.emplace_back("/mnt");
 				#else
-					if (disks.contains("/")) mem.disks_order.push_back("/");
+					if (disks.contains("/")) mem.disks_order.emplace_back("/");
 				#endif
 				if (swap_disk and has_swap) {
-					mem.disks_order.push_back("swap");
+					mem.disks_order.emplace_back("swap");
 					if (not disks.contains("swap")) disks["swap"] = {"", "swap", "swap"};
 					disks.at("swap").total = mem.stats.at("swap_total");
 					disks.at("swap").used = mem.stats.at("swap_used");
@@ -2343,7 +2343,7 @@ namespace Net {
 
 				//? Update available interfaces vector and get status of interface
 				if (not v_contains(interfaces, iface)) {
-					interfaces.push_back(iface);
+					interfaces.emplace_back(iface);
 					net[iface].connected = (ifa->ifa_flags & IFF_RUNNING);
 
 					// An interface can have more than one IP of the same family associated with it,

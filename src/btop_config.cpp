@@ -662,7 +662,7 @@ namespace Config {
 		auto old_boxes = current_boxes;
 		auto box_pos = rng::find(current_boxes, box);
 		if (box_pos == current_boxes.end())
-			current_boxes.push_back(box);
+			current_boxes.emplace_back(box);
 		else
 			current_boxes.erase(box_pos);
 
@@ -700,7 +700,7 @@ namespace Config {
 			vector<string> valid_names;
 			valid_names.reserve(descriptions.size());
 			for (const auto &n : descriptions)
-				valid_names.push_back(n[0]);
+				valid_names.emplace_back(n[0]);
 			if (string v_string; cread.peek() != '#' or (getline(cread, v_string, '\n') and not s_contains(v_string, Global::Version)))
 				write_new = true;
 			while (not cread.eof()) {
