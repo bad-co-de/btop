@@ -326,7 +326,7 @@ namespace Cpu {
 	bool has_battery = true;
 	tuple<int, float, long, string> current_bat;
 
-	const array time_names {
+	constexpr array time_names {
 		"user"s, "nice"s, "system"s, "idle"s, "iowait"s,
 		"irq"s, "softirq"s, "steal"s, "guest"s, "guest_nice"s
 	};

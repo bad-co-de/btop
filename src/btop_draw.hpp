@@ -30,32 +30,32 @@ using std::string;
 using std::vector;
 
 namespace Symbols {
-	const string h_line				= "─";
-	const string v_line				= "│";
-	const string dotted_v_line		= "╎";
-	const string left_up			= "┌";
-	const string right_up			= "┐";
-	const string left_down			= "└";
-	const string right_down			= "┘";
-	const string round_left_up		= "╭";
-	const string round_right_up		= "╮";
-	const string round_left_down	= "╰";
-	const string round_right_down	= "╯";
-	const string title_left_down	= "┘";
-	const string title_right_down	= "└";
-	const string title_left			= "┐";
-	const string title_right		= "┌";
-	const string div_right			= "┤";
-	const string div_left			= "├";
-	const string div_up				= "┬";
-	const string div_down			= "┴";
+	constexpr string h_line				= "─";
+	constexpr string v_line				= "│";
+	constexpr string dotted_v_line			= "╎";
+	constexpr string left_up			= "┌";
+	constexpr string right_up			= "┐";
+	constexpr string left_down			= "└";
+	constexpr string right_down			= "┘";
+	constexpr string round_left_up			= "╭";
+	constexpr string round_right_up			= "╮";
+	constexpr string round_left_down		= "╰";
+	constexpr string round_right_down		= "╯";
+	constexpr string title_left_down		= "┘";
+	constexpr string title_right_down		= "└";
+	constexpr string title_left			= "┐";
+	constexpr string title_right			= "┌";
+	constexpr string div_right			= "┤";
+	constexpr string div_left			= "├";
+	constexpr string div_up				= "┬";
+	constexpr string div_down			= "┴";
 
 
-	const string up = "↑";
-	const string down = "↓";
-	const string left = "←";
-	const string right = "→";
-	const string enter = "↵";
+	constexpr string up = "↑";
+	constexpr string down = "↓";
+	constexpr string left = "←";
+	constexpr string right = "→";
+	constexpr string enter = "↵";
 }
 
 namespace Draw {

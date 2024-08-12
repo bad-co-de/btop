@@ -51,9 +51,9 @@ using namespace std::literals; // for operator""s
 namespace rng = std::ranges;
 
 namespace Symbols {
-	const string meter = "■";
+	constexpr string meter = "■";
 
-	const array<string, 10> superscript = { "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹" };
+	constexpr array<string, 10> superscript = { "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹" };
 
 	const std::unordered_map<string, vector<string>> graph_symbols = {
 		{ "braille_up", {

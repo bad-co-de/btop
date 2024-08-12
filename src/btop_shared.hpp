@@ -119,7 +119,7 @@ namespace Gpu {
 
 	extern std::unordered_map<string, deque<long long>> shared_gpu_percent; // averages, power/vram total
 
-	const array mem_names { "used"s, "free"s };
+	constexpr array mem_names { "used"sv, "free"sv };
 
 	//* Container for process information // TODO
 	/*struct proc_info {
@@ -241,8 +241,8 @@ namespace Mem {
 	extern string box;
 	extern int x, y, width, height, min_width, min_height;
 	extern bool has_swap, shown, redraw;
-	const array mem_names { "used"s, "available"s, "cached"s, "free"s };
-	const array swap_names { "swap_used"s, "swap_free"s };
+	constexpr array mem_names { "used"s, "available"s, "cached"s, "free"s };
+	constexpr array swap_names { "swap_used"s, "swap_free"s };
 	extern int disk_ios;
 
 	struct disk_info {

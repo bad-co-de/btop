@@ -81,7 +81,7 @@ namespace Global {
 		{"#801414", "██████╔╝   ██║   ╚██████╔╝██║        ╚═╝    ╚═╝"},
 		{"#000000", "╚═════╝    ╚═╝    ╚═════╝ ╚═╝"},
 	};
-	const string Version = "1.4.1";
+	constexpr string Version = "1.4.1";
 
 	int coreCount;
 	string overlay;
@@ -128,9 +128,9 @@ void term_resize(bool force) {
 	}
 	else return;
 #ifdef GPU_SUPPORT
-	static const array<string, 10> all_boxes = {"gpu5", "cpu", "mem", "net", "proc", "gpu0", "gpu1", "gpu2", "gpu3", "gpu4"};
+	static constexpr array<string, 10> all_boxes = {"gpu5", "cpu", "mem", "net", "proc", "gpu0", "gpu1", "gpu2", "gpu3", "gpu4"};
 #else
-	static const array<string, 5> all_boxes = {"", "cpu", "mem", "net", "proc"};
+	static constexpr array<string, 5> all_boxes = {"", "cpu", "mem", "net", "proc"};
 #endif
 	Global::resized = true;
 	if (Runner::active) Runner::stop();

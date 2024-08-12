@@ -421,25 +421,25 @@ namespace Tools {
 
 		// taking advantage of type deduction for array creation (since C++17)
 		// combined with string literals (operator""s)
-		static const array mebiUnits_bit {
+		static constexpr array mebiUnits_bit {
 			"bit"s, "Kib"s, "Mib"s,
 			"Gib"s, "Tib"s, "Pib"s,
 			"Eib"s, "Zib"s, "Yib"s,
 			"Bib"s, "GEb"s
 		};
-		static const array mebiUnits_byte {
+		static constexpr array mebiUnits_byte {
 			"Byte"s, "KiB"s, "MiB"s,
 			"GiB"s, "TiB"s, "PiB"s,
 			"EiB"s, "ZiB"s, "YiB"s,
 			"BiB"s, "GEB"s
 		};
-		static const array megaUnits_bit {
+		static constexpr array megaUnits_bit {
 			"bit"s, "Kb"s, "Mb"s,
 			"Gb"s, "Tb"s, "Pb"s,
 			"Eb"s, "Zb"s, "Yb"s,
 			"Bb"s, "Gb"s
 		};
-		static const array megaUnits_byte {
+		static constexpr array megaUnits_byte {
 			"Byte"s, "KB"s, "MB"s,
 			"GB"s, "TB"s, "PB"s,
 			"EB"s, "ZB"s, "YB"s,

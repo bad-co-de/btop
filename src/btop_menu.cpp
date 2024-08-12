@@ -52,7 +52,7 @@ namespace Menu {
    int signalToSend{};
    int signalKillRet{};
 
-   const array<string, 32> P_Signals = {
+   constexpr array<string, 32> P_Signals = {
 	   "0",
 #ifdef __linux__
 #if defined(__hppa__)
@@ -124,8 +124,8 @@ namespace Menu {
 
   std::unordered_map<string, Input::Mouse_loc> mouse_mappings;
 
-   const array<array<string, 3>, 3> menu_normal = {
-		array<string, 3>{
+   constexpr array<array<string_view, 3>, 3> menu_normal = {{
+		{
 			"┌─┐┌─┐┌┬┐┬┌─┐┌┐┌┌─┐",
 			"│ │├─┘ │ ││ ││││└─┐",
 			"└─┘┴   ┴ ┴└─┘┘└┘└─┘"
@@ -140,10 +140,10 @@ namespace Menu {
 			"│─┼┐│ │ │ │ ",
 			"└─┘└└─┘ ┴ ┴ "
 		}
-	};
+	}};
 
-	const array<array<string, 3>, 3> menu_selected = {
-		array<string, 3>{
+	constexpr array<array<string_view, 3>, 3> menu_selected = {{
+		{
 			"╔═╗╔═╗╔╦╗╦╔═╗╔╗╔╔═╗",
 			"║ ║╠═╝ ║ ║║ ║║║║╚═╗",
 			"╚═╝╩   ╩ ╩╚═╝╝╚╝╚═╝"
@@ -158,11 +158,11 @@ namespace Menu {
 			"║═╬╗║ ║ ║ ║  ",
 			"╚═╝╚╚═╝ ╩ ╩  "
 		}
-	};
+	}};
 
-	const array<int, 3> menu_width = {19, 12, 12};
+	constexpr array<int, 3> menu_width = {19, 12, 12};
 
-	const vector<array<string, 2>> help_text = {
+	constexpr array<array<string_view, 2>, 41> help_text = {{
 		{"Mouse 1", "Clicks buttons and selects in process list."},
 		{"Mouse scroll", "Scrolls any scrollable list/text under cursor."},
 		{"Esc, m", "Toggles main menu."},
@@ -204,7 +204,7 @@ namespace Menu {
 		{"", " "},
 		{"", "For bug reporting and project updates, visit:"},
 		{"", "https://github.com/aristocratos/btop"},
-	};
+	}};
 
 	const vector<vector<vector<string>>> categories = {
 		{
@@ -1161,7 +1161,8 @@ namespace Menu {
 				const auto& colors = (i == selected ? colors_selected : colors_normal);
 				if (redraw) mouse_mappings["button_" + to_string(i)] = {cy, Term::width/2 - menu_width[i]/2, 3, menu_width[i]};
 				for (int ic = 0; const auto& line : menu) {
-					out += Mv::to(cy++, Term::width/2 - menu_width[i]/2) + (tty_mode ? "" : colors[ic++]) + line;
+					out += Mv::to(cy++, Term::width/2 - menu_width[i]/2) + (tty_mode ? "" : colors[ic++]);
+					out += line;
 				}
 			}
 			out += Fx::reset;
@@ -1575,8 +1576,9 @@ static int optionsMenu(const string& key) {
 			auto cy = y+7;
 			out += Mv::to(cy++, x + 1) + Theme::c("title") + Fx::b + cjust("Key:", 20) + "Description:";
 			for (int c = 0, i = max(0, (height - 3) * page); c++ < height - 3 and i < (int)help_text.size(); i++) {
-				out += Mv::to(cy++, x + 1) + Theme::c("hi_fg") + Fx::b + cjust(help_text[i][0], 20)
-					+ Theme::c("main_fg") + Fx::ub + help_text[i][1];
+				out += Mv::to(cy++, x + 1) + Theme::c("hi_fg") + Fx::b + cjust(string{help_text[i][0]}, 20)
+					+ Theme::c("main_fg") + Fx::ub;
+				out += help_text[i][1];
 			}
 			out += Fx::reset;
 		}
@@ -1586,7 +1588,7 @@ static int optionsMenu(const string& key) {
 	}
 
 	//* Add menus here and update enum Menus in header
-	const auto menuFunc = vector{
+	constexpr auto menuFunc = array{
 		ref(sizeError),
 		ref(signalChoose),
 		ref(signalSend),
