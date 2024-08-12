@@ -838,13 +838,13 @@ namespace Menu {
 	}
 
 	//? Process input
-	int msgBox::input(string key) {
+	int msgBox::input(string_view key) {
 		if (key.empty()) return Invalid;
 
 		if (is_in(key, "escape", "backspace", "q") or key == "button2") {
 			return No_Esc;
 		}
-		else if (key == "button1" or (boxtype == 0 and str_to_upper(key) == "O")) {
+		else if (key == "button1" or (boxtype == 0 and (key == "o" or key == "O"))) {
 			return Ok_Yes;
 		}
 		else if (is_in(key, "enter", "space")) {
@@ -853,10 +853,10 @@ namespace Menu {
 		else if (boxtype == 0) {
 			return Invalid;
 		}
-		else if (str_to_upper(key) == "Y") {
+		else if (key == "y" or key == "Y") {
 			return Ok_Yes;
 		}
-		else if (str_to_upper(key) == "N") {
+		else if (key == "n" or key == "N") {
 			return No_Esc;
 		}
 		else if (is_in(key, "right", "tab")) {
