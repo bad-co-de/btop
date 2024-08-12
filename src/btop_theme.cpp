@@ -153,7 +153,7 @@ namespace Theme {
 	string hex_to_color(string hexa, bool t_to_256, const string& depth) {
 		if (hexa.size() > 1) {
 			hexa.erase(0, 1);
-			for (auto& c : hexa) {
+			for (const auto& c : hexa) {
 				if (not isxdigit(c)) {
 					Logger::error("Invalid hex value: " + hexa);
 					return "";
@@ -203,7 +203,7 @@ namespace Theme {
 		array<int, 3> hex_to_dec(string hexa) {
 			if (hexa.size() > 1) {
 				hexa.erase(0, 1);
-				for (auto& c : hexa) {
+				for (const auto& c : hexa) {
 					if (not isxdigit(c))
 						return array{-1, -1, -1};
 				}
@@ -418,7 +418,7 @@ namespace Theme {
 
 		for (const auto& path : { user_theme_dir, theme_dir } ) {
 			if (path.empty()) continue;
-			for (auto& file : fs::directory_iterator(path)) {
+			for (const auto& file : fs::directory_iterator(path)) {
 				if (file.path().extension() == ".theme" and access(file.path().c_str(), R_OK) != -1 and not v_contains(themes, file.path().c_str())) {
 					themes.emplace_back(file.path().c_str());
 				}

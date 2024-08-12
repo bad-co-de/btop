@@ -95,7 +95,7 @@ namespace Input {
 		FD_ZERO(&fds);
 		FD_SET(STDIN_FILENO, &fds);
 		struct timespec wait;
-		struct timespec *waitptr = nullptr;
+		const struct timespec *waitptr = nullptr;
 
 		if(timeout != std::numeric_limits<uint64_t>::max()) {
 			wait.tv_sec = timeout / 1000;
@@ -401,7 +401,7 @@ namespace Input {
 				}
 				else if (is_in(key, "+", "-", "space") and Config::getB("proc_tree") and Config::getI("proc_selected") > 0) {
 					atomic_wait(Runner::active);
-					auto& pid = Config::getI("selected_pid");
+					const auto& pid = Config::getI("selected_pid");
 					if (key == "+" or key == "space") Proc::expand = pid;
 					if (key == "-" or key == "space") Proc::collapse = pid;
 					no_update = false;

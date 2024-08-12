@@ -280,7 +280,7 @@ namespace Shared {
 		Cpu::core_old_idles.insert(Cpu::core_old_idles.begin(), Shared::coreCount, 0);
 		Cpu::collect();
 		if (Runner::coreNum_reset) Runner::coreNum_reset = false;
-		for (auto& [field, vec] : Cpu::current_cpu.cpu_percent) {
+		for (const auto& [field, vec] : Cpu::current_cpu.cpu_percent) {
 			if (not vec.empty() and not v_contains(Cpu::available_fields, field)) Cpu::available_fields.push_back(field);
 		}
 		Cpu::cpuName = Cpu::get_cpuName();
@@ -411,7 +411,7 @@ namespace Cpu {
 				}
 			}
 			if (not got_coretemp and fs::exists(fs::path("/sys/devices/platform/coretemp.0/hwmon"))) {
-				for (auto& d : fs::directory_iterator(fs::path("/sys/devices/platform/coretemp.0/hwmon"))) {
+				for (const auto& d : fs::directory_iterator(fs::path("/sys/devices/platform/coretemp.0/hwmon"))) {
 					fs::path add_path = fs::canonical(d.path());
 
 					for (const auto & file : fs::directory_iterator(add_path)) {
@@ -735,10 +735,10 @@ namespace Cpu {
 			}
 		}
 
-		auto& battery_sel = Config::getS("selected_battery");
+		const auto& battery_sel = Config::getS("selected_battery");
 
 		if (auto_sel.empty()) {
-			for (auto& [name, bat] : batteries) {
+			for (const auto& [name, bat] : batteries) {
 				if (bat.device_type == "Battery") {
 					auto_sel = name;
 					break;
@@ -747,7 +747,7 @@ namespace Cpu {
 			if (auto_sel.empty()) auto_sel = batteries.begin()->first;
 		}
 
-		auto& b = (battery_sel != "Auto" and batteries.contains(battery_sel) ? batteries.at(battery_sel) : batteries.at(auto_sel));
+		const auto& b = (battery_sel != "Auto" and batteries.contains(battery_sel) ? batteries.at(battery_sel) : batteries.at(auto_sel));
 
 		int percent = -1;
 		long seconds = -1;
@@ -1855,7 +1855,7 @@ namespace Mem {
 			double uptime = system_uptime();
 			auto free_priv = Config::getB("disk_free_priv");
 			try {
-				auto& disks_filter = Config::getS("disks_filter");
+				const auto& disks_filter = Config::getS("disks_filter");
 				bool filter_exclude = false;
 				auto use_fstab = Config::getB("use_fstab");
 				auto only_physical = Config::getB("only_physical");
@@ -2021,7 +2021,7 @@ namespace Mem {
 							it = disks.erase(it);
 							continue;
 						}
-						auto &updated_stats = promise_res.first;
+						const auto &updated_stats = promise_res.first;
 						disk.total = updated_stats.total;
 						disk.free = updated_stats.free;
 						disk.used = updated_stats.used;
@@ -2214,7 +2214,7 @@ namespace Mem {
 				}
 			}
 		}
-		catch (fs::filesystem_error& e) {}
+		catch (const fs::filesystem_error& e) {}
 
 		Logger::debug("Could not read directory: " + zfs_pool_stat_path.string());
 		return "";
@@ -2314,7 +2314,7 @@ namespace Net {
 	auto collect(bool no_update) -> net_info& {
 		if (Runner::stopping) return empty_net;
 		auto& net = current_net;
-		auto& config_iface = Config::getS("net_iface");
+		const auto& config_iface = Config::getS("net_iface");
 		auto net_sync = Config::getB("net_sync");
 		auto net_auto = Config::getB("net_auto");
 		auto new_timestamp = time_ms();
@@ -2336,7 +2336,7 @@ namespace Net {
 			string ipv4, ipv6;
 
 			//? Iteration over all items in getifaddrs() list
-			for (auto* ifa = if_addrs.get(); ifa != nullptr; ifa = ifa->ifa_next) {
+			for (const auto* ifa = if_addrs.get(); ifa != nullptr; ifa = ifa->ifa_next) {
 				if (ifa->ifa_addr == nullptr) continue;
 				family = ifa->ifa_addr->sa_family;
 				const auto& iface = ifa->ifa_name;

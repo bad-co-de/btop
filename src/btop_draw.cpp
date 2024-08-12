@@ -554,9 +554,9 @@ namespace Cpu {
 		#endif
 		}
 		auto tty_mode = Config::getB("tty_mode");
-		auto& graph_symbol = (tty_mode ? "tty" : Config::getS("graph_symbol_cpu"));
-		auto& graph_bg = Symbols::graph_symbols.at((graph_symbol == "default" ? Config::getS("graph_symbol") + "_up" : graph_symbol + "_up")).at(6);
-		auto& temp_scale = Config::getS("temp_scale");
+		const auto& graph_symbol = (tty_mode ? "tty" : Config::getS("graph_symbol_cpu"));
+		const auto& graph_bg = Symbols::graph_symbols.at((graph_symbol == "default" ? Config::getS("graph_symbol") + "_up" : graph_symbol + "_up")).at(6);
+		const auto& temp_scale = Config::getS("temp_scale");
 		auto cpu_bottom = Config::getB("cpu_bottom");
 
 		const string& title_left = Theme::c("cpu_box") + (cpu_bottom ? Symbols::title_left_down : Symbols::title_left);
@@ -1549,8 +1549,8 @@ namespace Proc {
 		bool proc_gradient = (Config::getB("proc_gradient") and not Config::getB("lowcolor") and Theme::gradients.contains("proc"));
 		auto proc_colors = Config::getB("proc_colors");
 		auto tty_mode = Config::getB("tty_mode");
-		auto& graph_symbol = (tty_mode ? "tty" : Config::getS("graph_symbol_proc"));
-		auto& graph_bg = Symbols::graph_symbols.at((graph_symbol == "default" ? Config::getS("graph_symbol") + "_up" : graph_symbol + "_up")).at(6);
+		const auto& graph_symbol = (tty_mode ? "tty" : Config::getS("graph_symbol_proc"));
+		const auto& graph_bg = Symbols::graph_symbols.at((graph_symbol == "default" ? Config::getS("graph_symbol") + "_up" : graph_symbol + "_up")).at(6);
 		auto mem_bytes = Config::getB("proc_mem_bytes");
 		auto vim_keys = Config::getB("vim_keys");
 		auto show_graphs = Config::getB("proc_cpu_graphs");

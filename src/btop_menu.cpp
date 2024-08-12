@@ -1024,7 +1024,7 @@ namespace Menu {
 		if (s_pid == 0) return Closed;
 		if (redraw) {
 			atomic_wait(Runner::active);
-			auto& p_name = (s_pid == Config::getI("detailed_pid") ? Proc::detailed.entry.name : Config::getS("selected_name"));
+			const auto& p_name = (s_pid == Config::getI("detailed_pid") ? Proc::detailed.entry.name : Config::getS("selected_name"));
 			vector<string> cont_vec = {
 				Fx::b + Theme::c("main_fg") + "Send signal: " + Fx::ub + Theme::c("hi_fg") + to_string(signalToSend)
 				+ (signalToSend > 0 and signalToSend <= 32 ? Theme::c("main_fg") + " (" + P_Signals.at(signalToSend) + ')' : ""),
@@ -1385,7 +1385,7 @@ namespace Menu {
 				}
 			}
 			else if (selPred.test(isBrowsable)) {
-				auto& optList = optionsList.at(option).get();
+				const auto& optList = optionsList.at(option).get();
 				int i = v_index(optList, Config::getS(option));
 
 				if ((key == "right" or (vim_keys and key == "l")) and ++i >= (int)optList.size()) i = 0;

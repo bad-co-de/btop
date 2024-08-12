@@ -620,17 +620,17 @@ namespace Config {
 				ints.at("selected_depth") = Proc::selected_depth;
 			}
 
-			for (auto& item : stringsTmp) {
+			for (const auto& item : stringsTmp) {
 				strings.at(item.first) = item.second;
 			}
 			stringsTmp.clear();
 
-			for (auto& item : intsTmp) {
+			for (const auto& item : intsTmp) {
 				ints.at(item.first) = item.second;
 			}
 			intsTmp.clear();
 
-			for (auto& item : boolsTmp) {
+			for (const auto& item : boolsTmp) {
 				bools.at(item.first) = item.second;
 			}
 			boolsTmp.clear();
@@ -645,7 +645,7 @@ namespace Config {
 
 	bool set_boxes(const string& boxes) {
 		auto new_boxes = ssplit(boxes);
-		for (auto& box : new_boxes) {
+		for (const auto& box : new_boxes) {
 			if (not v_contains(valid_boxes, box)) return false;
 		#ifdef GPU_SUPPORT
 			if (box.starts_with("gpu")) {
