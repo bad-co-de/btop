@@ -236,6 +236,12 @@ namespace Tools {
 		return std::ranges::find(vec, find_val) != vec.end();
 	}
 
+	//* Check if array <arr> contains value <find_val>
+	template <typename T, size_t N, typename T2>
+	inline bool a_contains(const array<T, N>& arr, const T2& find_val) {
+		return std::ranges::find(arr, find_val) != arr.end();
+	}
+
 	//* Check if string <str> contains value <find_val>
 	template <typename T>
 	inline bool s_contains(const string& str, const T& find_val) {
@@ -256,6 +262,12 @@ namespace Tools {
 	template <typename T>
 	inline size_t v_index(const vector<T>& vec, const T& find_val) {
 		return std::ranges::distance(vec.begin(), std::ranges::find(vec, find_val));
+	}
+
+	//* Return index of <find_val> from array <arr>, returns size of <arr> if <find_val> is not present
+	template <typename T, size_t N, typename T2>
+	inline size_t a_index(const array<T, N>& arr, const T2& find_val) {
+		return std::ranges::distance(arr.begin(), std::ranges::find(arr, find_val));
 	}
 
 	//* Compare <first> with all following values
