@@ -338,8 +338,8 @@ namespace Runner {
 	//* RAII wrapper for pthread_mutex locking
 	class thread_lock {
 		pthread_mutex_t& pt_mutex;
-	public:
 		int status;
+	public:
 		explicit thread_lock(pthread_mutex_t& mtx) : pt_mutex(mtx) {
 			pthread_mutex_init(&pt_mutex, nullptr);
 			status = pthread_mutex_lock(&pt_mutex);
@@ -352,6 +352,8 @@ namespace Runner {
 		thread_lock& operator=(const thread_lock& other) = delete;
 		thread_lock(thread_lock&& other) = delete;
 		thread_lock& operator=(thread_lock&& other) = delete;
+
+		[[nodiscard]] inline int get_status() const noexcept { return status; }
 	};
 
 	//* Wrapper for raising privileges when using SUID bit
@@ -450,8 +452,8 @@ namespace Runner {
 
 		//? pthread_mutex_lock to lock thread and monitor health from main thread
 		thread_lock pt_lck(mtx);
-		if (pt_lck.status != 0) {
-			Global::exit_error_msg = "Exception in runner thread -> pthread_mutex_lock error id: " + to_string(pt_lck.status);
+		if (pt_lck.get_status() != 0) {
+			Global::exit_error_msg = "Exception in runner thread -> pthread_mutex_lock error id: " + to_string(pt_lck.get_status());
 			Global::thread_exception = true;
 			Input::interrupt();
 			stopping = true;
