@@ -518,6 +518,23 @@ namespace Tools {
 		return new_str;
 	}
 
+	std::string operator*(const string_view& str, int64_t n) {
+		if (n < 1 or str.empty()) {
+			return "";
+		}
+		else if (n == 1) {
+			return string{str};
+		}
+
+		string new_str;
+		new_str.reserve(str.size() * n);
+
+		for (; n > 0; n--)
+			new_str.append(str);
+
+		return new_str;
+	}
+
 	string strf_time(const string& strf) {
 		auto in_time_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 		std::tm bt {};

@@ -55,7 +55,7 @@ namespace Symbols {
 
 	constexpr array<string, 10> superscript = { "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹" };
 
-	const std::unordered_map<string, vector<string>> graph_symbols = {
+	const std::unordered_map<string_view, vector<string_view>> graph_symbols = {
 		{ "braille_up", {
 			" ", "⢀", "⢠", "⢰", "⢸",
 			"⡀", "⣀", "⣠", "⣰", "⣸",

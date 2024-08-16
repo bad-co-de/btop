@@ -353,6 +353,7 @@ namespace Tools {
 
 	//* Add std::string operator * : Repeat string <str> <n> number of times
 	std::string operator*(const string& str, int64_t n);
+	std::string operator*(const string_view& str, int64_t n);
 
 	template <typename K, typename T>
 #ifdef BTOP_DEBUG
