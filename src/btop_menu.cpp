@@ -1188,7 +1188,7 @@ namespace Menu {
 		static Draw::TextEdit editor;
 		static string warnings;
 		static bitset<8> selPred;
-		static const std::unordered_map<string, std::reference_wrapper<const vector<string>>> optionsList = {
+		static const std::unordered_map<string_view, std::reference_wrapper<const vector<string>>> optionsList = {
 			{"color_theme", std::cref(Theme::themes)},
 			{"log_level", std::cref(Logger::log_levels)},
 			{"temp_scale", std::cref(Config::temp_scales)},
