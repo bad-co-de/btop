@@ -384,7 +384,7 @@ namespace Draw {
 
 	//* Graph class ------------------------------------------------------------------------------------------------------------>
 	void Graph::_create(const deque<long long>& data, int data_offset) {
-		bool mult = (data.size() - data_offset > 1);
+		bool mult = (static_cast<int>(data.size()) - data_offset > 1);
 		const auto& graph_symbol = Symbols::graph_symbols.at(symbol + '_' + (invert ? "down" : "up"));
 		array<int, 2> result;
 		const float mod = (height == 1) ? 0.3 : 0.1;

@@ -69,7 +69,7 @@ namespace Term {
 			struct termios settings;
 			if (tcgetattr(STDIN_FILENO, &settings)) return false;
 			if (on) settings.c_lflag |= ECHO;
-			else settings.c_lflag &= ~(ECHO);
+			else settings.c_lflag &= static_cast<tcflag_t>(~(ECHO));
 			return 0 == tcsetattr(STDIN_FILENO, TCSANOW, &settings);
 		}
 
@@ -79,7 +79,7 @@ namespace Term {
 			if (tcgetattr(STDIN_FILENO, &settings)) return false;
 			if (on) settings.c_lflag |= ICANON;
 			else {
-				settings.c_lflag &= ~(ICANON);
+				settings.c_lflag &= static_cast<tcflag_t>(~(ICANON));
 				settings.c_cc[VMIN] = 0;
 				settings.c_cc[VTIME] = 0;
 			}
