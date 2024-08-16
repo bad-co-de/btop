@@ -708,7 +708,7 @@ namespace Cpu {
 			static float old_watts{};	// defaults to = 0
 			static string old_status;
 			static Draw::Meter bat_meter {10, "cpu", true};
-			static const std::unordered_map<string, string> bat_symbols = {
+			static const std::unordered_map<string_view, string_view> bat_symbols = {
 				{"charging", "▲"},
 				{"discharging", "▼"},
 				{"full", "■"},
@@ -734,7 +734,9 @@ namespace Cpu {
 				bat_pos = current_pos;
 				bat_len = current_len;
 
-				out += Mv::to(y, bat_pos) + title_left + Theme::c("title") + Fx::b + "BAT" + bat_symbol + ' ' + str_percent
+				out += Mv::to(y, bat_pos) + title_left + Theme::c("title") + Fx::b + "BAT";
+				out += bat_symbol;
+				out += ' ' + str_percent
 					+ (Term::width >= 100 ? Fx::ub + ' ' + bat_meter(percent) + Fx::b : "")
 					+ (not str_time.empty() ? ' ' + Theme::c("title") + str_time : "") + (not str_watts.empty() ? " " + Theme::c("title") + Fx::b + str_watts : "") + Fx::ub + title_right;
 			}
