@@ -39,7 +39,7 @@ namespace rng = std::ranges;
 namespace Input {
 
 	//* Map for translating key codes to readable values
-	const std::unordered_map<string, string> Key_escapes = {
+	const std::unordered_map<string_view, string_view> Key_escapes = {
 		{"\033",	"escape"},
 		{"\x12",	"ctrl_r"},
 		{"\n",		"enter"},
