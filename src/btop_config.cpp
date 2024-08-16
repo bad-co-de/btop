@@ -49,7 +49,7 @@ namespace Config {
 	atomic<bool> writelock (false);
 	bool write_new;
 
-	const vector<array<string, 2>> descriptions = {
+	constexpr array descriptions = std::to_array<array<string_view, 2>>({
 		{"color_theme", 		"#* Name of a btop++/bpytop/bashtop formatted \".theme\" file, \"Default\" and \"TTY\" for builtin themes.\n"
 								"#* Themes should be placed in \"../share/btop/themes\" relative to binary or \"$HOME/.config/btop/themes\""},
 
@@ -221,7 +221,7 @@ namespace Config {
 		{"custom_gpu_name4",	"#* Custom gpu4 model name, empty string to disable."},
 		{"custom_gpu_name5",	"#* Custom gpu5 model name, empty string to disable."},
 	#endif
-	};
+	});
 
 	std::unordered_map<std::string_view, string> strings = {
 		{"color_theme", "Default"},
@@ -763,8 +763,9 @@ namespace Config {
 		if (cwrite.good()) {
 			cwrite << "#? Config file for btop v. " << Global::Version << "\n";
 			for (const auto& [name, description] : descriptions) {
-				cwrite << "\n" << (description.empty() ? "" : description + "\n")
-						<< name << " = ";
+				cwrite << "\n";
+				if (!description.empty()) cwrite << description << "\n";
+				cwrite << name << " = ";
 				if (strings.contains(name))
 					cwrite << "\"" << strings.at(name) << "\"";
 				else if (ints.contains(name))
