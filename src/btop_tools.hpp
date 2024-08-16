@@ -475,4 +475,23 @@ namespace Tools {
 		[[nodiscard]] bool is_running() const;
 	};
 
+	//* A simple file descriptor wrapper to avoid leaks on early return or exceptions.
+	class FileDescriptor {
+		int m_fd;
+	public:
+		explicit FileDescriptor(int fd) noexcept : m_fd { fd } {}
+		~FileDescriptor() noexcept {
+			if (this->is_open()) {
+				close(m_fd);
+			}
+		}
+		FileDescriptor(const FileDescriptor&) = delete;
+  		FileDescriptor& operator=(const FileDescriptor&) = delete;
+		FileDescriptor(FileDescriptor&&) = delete;
+  		FileDescriptor& operator=(const FileDescriptor&&) = delete;
+
+		[[nodiscard]] bool is_open() const noexcept { return m_fd >= 0; }
+		[[nodiscard]] int get() const noexcept { return m_fd; }
+	};
+
 }
