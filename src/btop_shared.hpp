@@ -117,7 +117,7 @@ namespace Gpu {
 	extern vector<int> gpu_b_height_offsets;
 	extern long long gpu_pwr_total_max;
 
-	extern std::unordered_map<string, deque<long long>> shared_gpu_percent; // averages, power/vram total
+	extern std::unordered_map<std::string_view, deque<long long>> shared_gpu_percent; // averages, power/vram total
 
 	constexpr array mem_names { "used"sv, "free"sv };
 

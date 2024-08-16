@@ -626,7 +626,7 @@ namespace Cpu {
 					} else {
 						graphs.resize(1);
 						graph_width = graph_default_width;
-						graphs[0] = Draw::Graph{ graph_width, graph_height, "cpu", safeVal(Gpu::shared_gpu_percent, graph_field), graph_symbol, invert, true };
+						graphs[0] = Draw::Graph{ graph_width, graph_height, "cpu", safeVal(Gpu::shared_gpu_percent, string_view{graph_field}), graph_symbol, invert, true };
 					}
 				}
 				else {
@@ -769,7 +769,7 @@ namespace Cpu {
 					}
 				}
 				else
-					out += graphs[0](safeVal(Gpu::shared_gpu_percent, graph_field), (data_same or redraw));
+					out += graphs[0](safeVal(Gpu::shared_gpu_percent, string_view{graph_field}), (data_same or redraw));
 			else
 		#else
 			(void)graph_height;
