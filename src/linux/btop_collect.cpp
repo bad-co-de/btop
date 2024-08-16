@@ -331,7 +331,7 @@ namespace Cpu {
 		"irq"s, "softirq"s, "steal"s, "guest"s, "guest_nice"s
 	};
 
-	std::unordered_map<string, long long> cpu_old = {
+	std::unordered_map<string_view, long long> cpu_old = {
 			{"totals", 0},
 			{"idles", 0},
 			{"user", 0},
@@ -2306,8 +2306,8 @@ namespace Net {
 	vector<string> interfaces;
 	string selected_iface;
 	int errors{};
-	std::unordered_map<string, uint64_t> graph_max = { {"download", {}}, {"upload", {}} };
-	std::unordered_map<string, array<int, 2>> max_count = { {"download", {}}, {"upload", {}} };
+	std::unordered_map<string_view, uint64_t> graph_max = { {"download", {}}, {"upload", {}} };
+	std::unordered_map<string_view, array<int, 2>> max_count = { {"download", {}}, {"upload", {}} };
 	bool rescale{true};
 	uint64_t timestamp{};
 
