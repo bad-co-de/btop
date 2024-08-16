@@ -358,7 +358,7 @@ namespace Proc {
 	};
 
 	//? Translation from process state char to explanative string
-	const std::unordered_map<char, string> proc_states = {
+	const std::unordered_map<char, std::string_view> proc_states = {
 		{'R', "Running"},
 		{'S', "Sleeping"},
 		{'D', "Waiting"},
