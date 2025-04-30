@@ -1031,12 +1031,12 @@ namespace Menu {
 			const auto& p_name = (s_pid == Config::getI("detailed_pid") ? Proc::detailed.entry.name : Config::getS("selected_name"));
 			vector<string> cont_vec = {
 				Fx::b + Theme::c("main_fg") + "Send signal: " + Fx::ub + Theme::c("hi_fg") + to_string(signalToSend)
-				+ (signalToSend > 0 and signalToSend <= 32 ? Theme::c("main_fg") + " (" + P_Signals.at(signalToSend) + ')' : ""),
+				+ (signalToSend > 0 and signalToSend < 32 ? Theme::c("main_fg") + " (" + P_Signals.at(signalToSend) + ')' : ""),
 
 				Fx::b + Theme::c("main_fg") + "To PID: " + Fx::ub + Theme::c("hi_fg") + to_string(s_pid) + Theme::c("main_fg") + " ("
 				+ uresize(p_name, 16) + ')' + Fx::reset,
 			};
-			messageBox = Menu::msgBox{50, 1, cont_vec, (signalToSend > 1 and signalToSend <= 32 and signalToSend != 17 ? P_Signals.at(signalToSend) : "signal")};
+			messageBox = Menu::msgBox{50, 1, cont_vec, (signalToSend > 1 and signalToSend < 32 and signalToSend != 17 ? P_Signals.at(signalToSend) : "signal")};
 			Global::overlay = messageBox();
 		}
 		auto ret = messageBox.input(key);
