@@ -805,7 +805,7 @@ namespace Net {
 	vector<string> interfaces;
 	string selected_iface;
 	int errors = 0;
-	std::unordered_map<string, uint64_t> graph_max = {{"download", {}}, {"upload", {}}};
+	std::unordered_map<string_view, uint64_t> graph_max = {{"download", {}}, {"upload", {}}};
 	std::unordered_map<string, array<int, 2>> max_count = {{"download", {}}, {"upload", {}}};
 	bool rescale = true;
 	uint64_t timestamp = 0;

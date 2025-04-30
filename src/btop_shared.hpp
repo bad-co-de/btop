@@ -143,7 +143,7 @@ namespace Gpu {
 
 	//* Per-device container for GPU info
 	struct gpu_info {
-		std::unordered_map<string, deque<long long>> gpu_percent = {
+		std::unordered_map<std::string_view, deque<long long>> gpu_percent = {
 			{"gpu-totals", {}},
 			{"gpu-vram-totals", {}},
 			{"gpu-pwr-totals", {}},
@@ -303,8 +303,8 @@ namespace Net {
 	};
 
 	struct net_info {
-		std::unordered_map<string, deque<long long>> bandwidth = { {"download", {}}, {"upload", {}} };
-		std::unordered_map<string, net_stat> stat = { {"download", {}}, {"upload", {}} };
+		std::unordered_map<std::string_view, deque<long long>> bandwidth = { {"download", {}}, {"upload", {}} };
+		std::unordered_map<std::string_view, net_stat> stat = { {"download", {}}, {"upload", {}} };
 		string ipv4{};      // defaults to ""
 		string ipv6{};      // defaults to ""
 		bool connected{};

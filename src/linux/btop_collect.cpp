@@ -359,7 +359,7 @@ namespace Cpu {
 			}
 			else if (fs::exists("/sys/devices")) {
 				for (const auto& d : fs::directory_iterator("/sys/devices")) {
-					if (string(d.path().filename()).starts_with("arm")) {
+					if (d.path().filename().native().starts_with("arm")) {
 						name = d.path().filename();
 						break;
 					}
@@ -2384,7 +2384,7 @@ namespace Net {
 				if (netif.ipv4.empty() and netif.ipv6.empty())
 					netif.ipv4 = readfile("/sys/class/net/" + iface + "/address");
 
-				for (const string dir : {"download", "upload"}) {
+				for (const string_view dir : {"download", "upload"}) {
 					const fs::path sys_file = "/sys/class/net/" + iface + "/statistics/" + (dir == "download" ? "rx_bytes" : "tx_bytes");
 					auto& saved_stat = netif.stat.at(dir);
 					auto& bandwidth = netif.bandwidth.at(dir);
@@ -2477,7 +2477,7 @@ namespace Net {
 		//? Calculate max scale for graphs if needed
 		if (net_auto) {
 			bool sync = false;
-			for (const auto& dir: {"download", "upload"}) {
+			for (const string_view dir: {"download", "upload"}) {
 				for (const auto& sel : {0, 1}) {
 					if (rescale or max_count[dir][sel] >= 5) {
 						const long long avg_speed = (net[selected_iface].bandwidth[dir].size() > 5
@@ -2492,7 +2492,7 @@ namespace Net {
 				}
 				//? Sync download/upload graphs if enabled
 				if (sync) {
-					const auto other = (string(dir) == "upload" ? "download" : "upload");
+					const auto other = dir == "upload" ? "download" : "upload";
 					graph_max[other] = graph_max[dir];
 					max_count[other][0] = max_count[other][1] = 0;
 					break;

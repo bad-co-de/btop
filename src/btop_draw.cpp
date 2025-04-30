@@ -542,17 +542,19 @@ namespace Cpu {
 	#else
 		(void)gpus;
 	#endif
-		auto graph_up_field = Config::getS("cpu_graph_upper");
-		if (graph_up_field == "Auto" or not v_contains(Cpu::available_fields, graph_up_field))
-			graph_up_field = "total";
-		auto graph_lo_field = Config::getS("cpu_graph_lower");
-		if (graph_lo_field == "Auto" or not v_contains(Cpu::available_fields, graph_lo_field)) {
+		const auto& cpu_graph_upper = Config::getS("cpu_graph_upper");
+		const auto& graph_up_field = (cpu_graph_upper == "Auto" or not v_contains(Cpu::available_fields, cpu_graph_upper)) ? "total" : cpu_graph_upper;
+		const auto& cpu_graph_lower = Config::getS("cpu_graph_lower");
+		const auto& graph_lo_field = (cpu_graph_lower == "Auto" or not v_contains(Cpu::available_fields, cpu_graph_lower))
+			?
 		#ifdef GPU_SUPPORT
-			graph_lo_field = show_gpu ? "gpu-totals" : graph_up_field;
+			(show_gpu ? "gpu-totals" : graph_up_field)
 		#else
-			graph_lo_field = graph_up_field;
+			graph_up_field
 		#endif
-		}
+			:
+			cpu_graph_lower
+			;
 		auto tty_mode = Config::getB("tty_mode");
 		const auto& graph_symbol = (tty_mode ? "tty" : Config::getS("graph_symbol_cpu"));
 		const auto& graph_bg = Symbols::graph_symbols.at((graph_symbol == "default" ? Config::getS("graph_symbol") + "_up" : graph_symbol + "_up")).at(6);
@@ -806,9 +808,10 @@ namespace Cpu {
 			const auto [temp, unit] = celsius_to(safeVal(cpu.temp, 0).back(), temp_scale);
 			const auto& temp_color = Theme::g("temp").at(clamp(safeVal(cpu.temp, 0).back() * 100 / cpu.temp_max, 0ll, 100ll));
 			if ((b_column_size > 1 or b_columns > 1) and temp_graphs.size() >= 1ll)
-				out += ' ' + Theme::c("inactive_fg") + graph_bg * 5 + Mv::l(5) + temp_color
+				out += ' ' + Theme::c("inactive_fg") + graph_bg * 5 + Mv::l(5)
 					+ temp_graphs.at(0)(safeVal(cpu.temp, 0), data_same or redraw);
-			out += rjust(to_string(temp), 4) + Theme::c("main_fg") + unit;
+			out += temp_color + rjust(to_string(temp), 4) + Theme::c("main_fg");
+			out += unit;
 		}
 		out += Theme::c("div_line") + Symbols::v_line;
 
@@ -833,7 +836,8 @@ namespace Cpu {
 				if (b_column_size > 1 and std::cmp_greater_equal(temp_graphs.size(), n))
 					out += ' ' + Theme::c("inactive_fg") + graph_bg * 5 + Mv::l(5)
 						+ temp_graphs.at(n+1)(safeVal(cpu.temp, n+1), data_same or redraw);
-				out += temp_color + rjust(to_string(temp), 4) + Theme::c("main_fg") + unit;
+				out += temp_color + rjust(to_string(temp), 4) + Theme::c("main_fg");
+				out += unit;
 			}
 
 			out += Theme::c("div_line") + Symbols::v_line;
@@ -906,7 +910,8 @@ namespace Cpu {
 						out += Theme::c("inactive_fg") + graph_bg * 5 + Mv::l(5) + Theme::g("temp").at(clamp(gpus[i].temp.back() * 100 / gpus[i].temp_max, 0ll, 100ll))
 							+ gpu_temp_graphs[i](gpus[i].temp, data_same or redraw);
 					else out += Theme::g("temp").at(clamp(gpus[i].temp.back() * 100 / gpus[i].temp_max, 0ll, 100ll));
-					out += rjust(to_string(temp), 3) + Theme::c("main_fg") + unit;
+					out += rjust(to_string(temp), 3) + Theme::c("main_fg");
+					out += unit;
 				}
 				if (gpus[i].supported_functions.pwr_usage) {
 					out += ' ' + Theme::g("cached").at(clamp(safeVal(gpus[i].gpu_percent, "gpu-pwr-totals"s).back(), 0ll, 100ll))
@@ -961,12 +966,12 @@ namespace Gpu {
 		auto& pwr_meter = pwr_meter_vec[index];
 
 		if (force_redraw) redraw[index] = true;
-        bool show_temps = gpu.supported_functions.temp_info and (Config::getB("check_temp"));
-        auto tty_mode = Config::getB("tty_mode");
-		auto& temp_scale = Config::getS("temp_scale");
-		auto& graph_symbol = (tty_mode ? "tty" : Config::getS("graph_symbol_gpu"));
-		auto& graph_bg = Symbols::graph_symbols.at((graph_symbol == "default" ? Config::getS("graph_symbol") + "_up" : graph_symbol + "_up")).at(6);
-        auto single_graph = !Config::getB("gpu_mirror_graph");
+		const bool show_temps = gpu.supported_functions.temp_info and (Config::getB("check_temp"));
+		const auto tty_mode = Config::getB("tty_mode");
+		const auto& temp_scale = Config::getS("temp_scale");
+		const auto& graph_symbol = (tty_mode ? "tty" : Config::getS("graph_symbol_gpu"));
+		const auto& graph_bg = Symbols::graph_symbols.at((graph_symbol == "default" ? Config::getS("graph_symbol") + "_up" : graph_symbol + "_up")).at(6);
+		const auto single_graph = !Config::getB("gpu_mirror_graph");
 		string out;
 		out.reserve(width * height);
 
@@ -1016,7 +1021,8 @@ namespace Gpu {
 				const auto [temp, unit] = celsius_to(gpu.temp.back(), temp_scale);
 				out += ' ' + Theme::c("inactive_fg") + graph_bg * 6 + Mv::l(6) + Theme::g("temp").at(clamp(gpu.temp.back() * 100 / gpu.temp_max, 0ll, 100ll))
 					+ temp_graph(gpu.temp, data_same or redraw[index]);
-				out += rjust(to_string(temp), 4) + Theme::c("main_fg") + unit;
+				out += rjust(to_string(temp), 4) + Theme::c("main_fg");
+				out += unit;
 			}
 			out += Theme::c("div_line") + Symbols::v_line;
 		}
@@ -1370,19 +1376,19 @@ namespace Net {
 	int x = 1, y, width = 20, height;
 	int b_x, b_y, b_width, b_height, d_graph_height, u_graph_height;
 	bool shown = true, redraw = true;
-	const int MAX_IFNAMSIZ = 15;
+	constexpr int MAX_IFNAMSIZ = 15;
 	string old_ip;
-	std::unordered_map<string, Draw::Graph> graphs;
+	std::unordered_map<string_view, Draw::Graph> graphs;
 	string box;
 
 	string draw(const net_info& net, bool force_redraw, bool data_same) {
 		if (Runner::stopping) return "";
 		if (force_redraw) redraw = true;
-		auto net_sync = Config::getB("net_sync");
-		auto net_auto = Config::getB("net_auto");
-		auto tty_mode = Config::getB("tty_mode");
-		auto& graph_symbol = (tty_mode ? "tty" : Config::getS("graph_symbol_net"));
-		string ip_addr = (net.ipv4.empty() ? net.ipv6 : net.ipv4);
+		const auto net_sync = Config::getB("net_sync");
+		const auto net_auto = Config::getB("net_auto");
+		const auto tty_mode = Config::getB("tty_mode");
+		const auto& graph_symbol = (tty_mode ? "tty" : Config::getS("graph_symbol_net"));
+		const auto& ip_addr = (net.ipv4.empty() ? net.ipv6 : net.ipv4);
 		if (old_ip != ip_addr) {
 			old_ip = ip_addr;
 			redraw = true;
@@ -1437,7 +1443,7 @@ namespace Net {
 
 		//? Graphs and stats
 		int cy = 0;
-		for (const string dir : {"download", "upload"}) {
+		for (const string_view dir : {"download", "upload"}) {
 			out += Mv::to(y+1 + (dir == "upload" ? u_graph_height : 0), x + 1) + graphs.at(dir)(safeVal(net.bandwidth, dir), redraw or data_same or not net.connected)
 				+ Mv::to(y+1 + (dir == "upload" ? height - 3: 0), x + 1) + Fx::ub + Theme::c("graph_text")
 				+ floating_humanizer((dir == "upload" ? up_max : down_max), true);

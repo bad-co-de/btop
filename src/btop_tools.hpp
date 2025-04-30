@@ -292,18 +292,18 @@ namespace Tools {
 	}
 
 	//* Check if a string is a valid bool value
-	inline bool isbool(const string& str) {
+	inline bool isbool(const string_view str) {
 		return is_in(str, "true", "false", "True", "False");
 	}
 
 	//* Convert string to bool, returning any value not equal to "true" or "True" as false
-	inline bool stobool(const string& str) {
+	inline bool stobool(const string_view str) {
 		return is_in(str, "true", "True");
 	}
 
 	//* Check if a string is a valid integer value (only positive)
-	inline bool isint(const string& str) {
-		return all_of(str.begin(), str.end(), ::isdigit);
+	inline bool isint(const string_view str) {
+		return std::all_of(str.begin(), str.end(), ::isdigit);
 	}
 
 	//* Left-trim <t_str> from <str> and return new string
@@ -355,9 +355,9 @@ namespace Tools {
 	std::string operator*(const string& str, int64_t n);
 	std::string operator*(const string_view& str, int64_t n);
 
-	template <typename K, typename T>
+	template <typename K, typename L, typename T>
 #ifdef BTOP_DEBUG
-	const T& safeVal(const std::unordered_map<K, T>& map, const K& key, const T& fallback = T{}, std::source_location loc = std::source_location::current()) {
+	const T& safeVal(const std::unordered_map<K, T>& map, const L& key, const T& fallback = T{}, std::source_location loc = std::source_location::current()) {
 		if (auto it = map.find(key); it != map.end()) {
 			return it->second;
 		} else {
@@ -366,7 +366,7 @@ namespace Tools {
 		}
 	};
 #else
-	const T& safeVal(const std::unordered_map<K, T>& map, const K& key, const T& fallback = T{}) {
+	const T& safeVal(const std::unordered_map<K, T>& map, const L& key, const T& fallback = T{}) {
 		if (auto it = map.find(key); it != map.end()) {
 			return it->second;
 		} else {
@@ -438,7 +438,7 @@ namespace Tools {
 	string readfile(const std::filesystem::path& path, const string& fallback = "");
 
 	//* Convert a celsius value to celsius, fahrenheit, kelvin or rankin and return tuple with new value and unit.
-	auto celsius_to(const long long& celsius, const string& scale) -> tuple<long long, string>;
+	auto celsius_to(const long long& celsius, const string& scale) -> tuple<long long, string_view>;
 }
 
 namespace Tools {

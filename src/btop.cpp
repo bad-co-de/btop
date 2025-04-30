@@ -137,9 +137,7 @@ void term_resize(bool force) {
 	Term::refresh();
 	Config::unlock();
 
-	auto boxes = Config::getS("shown_boxes");
-	auto min_size = Term::get_min_size(boxes);
-	auto minWidth = min_size.at(0), minHeight = min_size.at(1);
+	auto [minWidth, minHeight] = Term::get_min_size(Config::getS("shown_boxes"));
 
 	while (not force or (Term::width < minWidth or Term::height < minHeight)) {
 		sleep_ms(100);
@@ -179,13 +177,10 @@ void term_resize(bool force) {
 						const auto& box = all_boxes.at(intKey);
 						Config::current_preset = -1;
 						Config::toggle_box(box);
-						boxes = Config::getS("shown_boxes");
+						std::tie(minWidth, minHeight) = Term::get_min_size(Config::getS("shown_boxes"));
 					}
 				}
 			}
-			min_size = Term::get_min_size(boxes);
-			minWidth = min_size.at(0);
-			minHeight = min_size.at(1);
 		}
 		else if (not Term::refresh()) break;
 	}
@@ -312,7 +307,7 @@ static void init_config(bool low_color) {
 	else Logger::set(Config::getS("log_level"));
 
 	static string log_level;
-	if (const string current_level = Config::getS("log_level"); log_level != current_level) {
+	if (const auto& current_level = Config::getS("log_level"); log_level != current_level) {
 		log_level = current_level;
 		Logger::info("Logger set to " + (Global::debug ? "DEBUG" : log_level));
 	}
