@@ -684,7 +684,7 @@ namespace Mem {
 		if (show_disks) {
 			std::unordered_map<string, string> mapping;  // keep mapping from device -> mountpoint, since IOKit doesn't give us the mountpoint
 			double uptime = system_uptime();
-			auto &disks_filter = Config::getS("disks_filter");
+			const auto &disks_filter = Config::getS("disks_filter");
 			bool filter_exclude = false;
 			// auto only_physical = Config::getB("only_physical");
 			auto &disks = mem.disks;
@@ -823,7 +823,7 @@ namespace Net {
 
 	auto collect(bool no_update) -> net_info & {
 		auto &net = current_net;
-		auto &config_iface = Config::getS("net_iface");
+		const auto &config_iface = Config::getS("net_iface");
 		auto net_sync = Config::getB("net_sync");
 		auto net_auto = Config::getB("net_auto");
 		auto new_timestamp = time_ms();

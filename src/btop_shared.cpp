@@ -177,7 +177,7 @@ namespace Proc {
 
 	void _tree_gen(proc_info& cur_proc, vector<proc_info>& in_procs, vector<tree_proc>& out_procs,
 		int cur_depth, bool collapsed, const string& filter, bool found, bool no_update, bool should_filter) {
-		auto cur_pos = out_procs.size();
+		const auto cur_pos = out_procs.size();
 		bool filtering = false;
 
 		//? If filtering, include children of matching processes
